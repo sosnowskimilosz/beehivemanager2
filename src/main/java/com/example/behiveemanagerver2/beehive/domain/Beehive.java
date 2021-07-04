@@ -14,4 +14,10 @@ public class Beehive {
     MarkOfBeehive mark;
     Boolean isQueen;
 
+    public Beehive(String symbol, MaterialOfBeehive material, MarkOfBeehive mark, Boolean isQueen) {
+        this.symbol = symbol;
+        this.material = material;
+        this.mark = mark;
+        this.isQueen = isQueen;
+    }
 }
