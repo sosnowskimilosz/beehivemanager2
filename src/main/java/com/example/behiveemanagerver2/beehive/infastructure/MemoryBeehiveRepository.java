@@ -40,6 +40,6 @@ public class MemoryBeehiveRepository implements BeehiveRepository {
 
     @Override
     public void removeById(Long id) {
-
+        storage.remove(id);
     }
 }

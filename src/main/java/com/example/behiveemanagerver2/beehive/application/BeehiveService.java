@@ -26,7 +26,7 @@ public class BeehiveService implements BeehiveUseCase {
 
     @Override
     public Optional<Beehive> findById(Long id) {
-        return Optional.empty();
+        return repository.findById(id);
     }
 
     @Override
