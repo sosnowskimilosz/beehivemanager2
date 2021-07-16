@@ -7,7 +7,7 @@ public interface BeehiveRepository {
 
     List<Beehive> findaAll();
 
-    void save(Beehive beehive);
+    Beehive save(Beehive beehive);
 
     Optional<Beehive> findById(Long id);
 

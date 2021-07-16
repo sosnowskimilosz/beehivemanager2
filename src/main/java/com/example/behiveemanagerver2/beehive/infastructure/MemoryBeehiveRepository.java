@@ -19,7 +19,7 @@ public class MemoryBeehiveRepository implements BeehiveRepository {
     }
 
     @Override
-    public void save(Beehive beehive) {
+    public Beehive save(Beehive beehive) {
         if (beehive.getId() != null) {
             storage.put(beehive.getId(), beehive);
         } else {
@@ -27,6 +27,7 @@ public class MemoryBeehiveRepository implements BeehiveRepository {
             beehive.setId(nextId);
             storage.put(nextId, beehive);
         }
+        return beehive;
     }
 
     private Long nextId() {

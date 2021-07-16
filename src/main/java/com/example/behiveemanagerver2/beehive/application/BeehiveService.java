@@ -45,6 +45,14 @@ public class BeehiveService implements BeehiveUseCase {
     }
 
     @Override
+    public List<Beehive> findByMark(MarkOfBeehive mark) {
+        return repository.findaAll()
+                .stream()
+                .filter(beehive-> beehive.getMark() == mark)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<Beehive> findByQueenPresence(boolean isQueen) {
         return repository.findaAll().stream()
                 .filter(beehive -> beehive.getIsQueen() == isQueen)
@@ -57,9 +65,9 @@ public class BeehiveService implements BeehiveUseCase {
     }
 
     @Override
-    public void addBeehive(CreateBeehiveCommand command) {
+    public Beehive addBeehive(CreateBeehiveCommand command) {
         Beehive beehive = command.toBeehive();
-        repository.save(beehive);
+        return repository.save(beehive);
     }
 
     @Override

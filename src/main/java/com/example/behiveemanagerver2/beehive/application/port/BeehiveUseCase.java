@@ -3,6 +3,7 @@ package com.example.behiveemanagerver2.beehive.application.port;
 import com.example.behiveemanagerver2.beehive.domain.Beehive;
 import com.example.behiveemanagerver2.beehive.domain.MarkOfBeehive;
 import com.example.behiveemanagerver2.beehive.domain.MaterialOfBeehive;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Value;
 
@@ -25,9 +26,11 @@ public interface BeehiveUseCase {
 
     void removeById(Long id);
 
-    void addBeehive(CreateBeehiveCommand command);
+    Beehive addBeehive(CreateBeehiveCommand command);
 
     UpdateBeehiveResponse updateBeehive(UpdateBeehiveCommand command);
+
+    List<Beehive> findByMark(MarkOfBeehive valueOf);
 
     @Value
     class CreateBeehiveCommand {
@@ -51,6 +54,7 @@ public interface BeehiveUseCase {
 
     @Value
     @Builder
+    @AllArgsConstructor
     class UpdateBeehiveCommand {
         Long id;
         String symbol;
