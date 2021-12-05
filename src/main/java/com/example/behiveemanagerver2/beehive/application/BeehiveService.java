@@ -53,6 +53,16 @@ public class BeehiveService implements BeehiveUseCase {
     }
 
     @Override
+    public void updateSymbolOfBeehive(UpdateSymbolOfBeehiveCommand command) {
+        int length = command.getFile().length;
+        System.out.println("Receive cover command: " + command.getFilename() + " bytes: " + length);
+        repository.findById(command.getId())
+                .ifPresent(book -> {
+//                    book.setSymbolOfBeehive();
+                });
+    }
+
+    @Override
     public List<Beehive> findByQueenPresence(boolean isQueen) {
         return repository.findaAll().stream()
                 .filter(beehive -> beehive.getIsQueen() == isQueen)

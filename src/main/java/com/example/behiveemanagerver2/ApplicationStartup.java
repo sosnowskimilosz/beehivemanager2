@@ -2,7 +2,6 @@ package com.example.behiveemanagerver2;
 
 import com.example.behiveemanagerver2.beehive.application.port.BeehiveUseCase;
 import com.example.behiveemanagerver2.beehive.application.port.BeehiveUseCase.CreateBeehiveCommand;
-import com.example.behiveemanagerver2.beehive.domain.Beehive;
 import com.example.behiveemanagerver2.beehive.domain.MarkOfBeehive;
 import com.example.behiveemanagerver2.beehive.domain.MaterialOfBeehive;
 import lombok.AllArgsConstructor;

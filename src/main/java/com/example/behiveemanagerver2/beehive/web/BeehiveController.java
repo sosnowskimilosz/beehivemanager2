@@ -13,11 +13,13 @@ import lombok.Data;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 
@@ -72,18 +74,30 @@ public class BeehiveController {
         return ResponseEntity.created(createdBookUri(beehive)).build();
     }
 
+    private URI createdBookUri(Beehive beehive) {
+        return new CreatedURI("/" + beehive.getId().toString()).uri();
+    }
+
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public void updateBeehive(@PathVariable Long id, @RequestBody RestBeehiveCommand command){
+    public void updateBeehive(@PathVariable Long id, @RequestBody RestBeehiveCommand command) {
         UpdateBeehiveResponse response = service.updateBeehive(command.toUpdateCommand(id));
-        if(!response.isSuccess()){
-            String message = String.join(", ",response.getErrors());
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,message);
+        if (!response.isSuccess()) {
+            String message = String.join(", ", response.getErrors());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, message);
         }
     }
 
-    private URI createdBookUri(Beehive beehive) {
-        return new CreatedURI("/" + beehive.getId().toString()).uri();
+    @PutMapping("/{id}/symbol")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void addSymbolOfBeehive(@PathVariable Long id, @RequestParam("file") MultipartFile file) throws IOException {
+        System.out.println("Got file: " + file.getOriginalFilename());
+        service.updateSymbolOfBeehive(new BeehiveUseCase.UpdateSymbolOfBeehiveCommand(
+                id,
+                file.getBytes(),
+                file.getContentType(),
+                file.getOriginalFilename()
+        ));
     }
 
     @Data

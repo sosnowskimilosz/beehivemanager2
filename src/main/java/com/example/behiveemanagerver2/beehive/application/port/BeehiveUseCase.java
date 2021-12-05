@@ -32,6 +32,16 @@ public interface BeehiveUseCase {
 
     List<Beehive> findByMark(MarkOfBeehive valueOf);
 
+    void updateSymbolOfBeehive(UpdateSymbolOfBeehiveCommand command);
+
+    @Value
+    class UpdateSymbolOfBeehiveCommand {
+        Long id;
+        byte[] file;
+        String contentType;
+        String filename;
+    }
+
     @Value
     class CreateBeehiveCommand {
         String symbol;
