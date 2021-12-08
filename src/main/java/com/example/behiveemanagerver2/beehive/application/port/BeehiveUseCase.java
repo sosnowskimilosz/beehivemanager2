@@ -34,6 +34,8 @@ public interface BeehiveUseCase {
 
     void updateSymbolOfBeehive(UpdateSymbolOfBeehiveCommand command);
 
+    void removeSymbolOfBeehive(Long id);
+
     @Value
     class UpdateSymbolOfBeehiveCommand {
         Long id;

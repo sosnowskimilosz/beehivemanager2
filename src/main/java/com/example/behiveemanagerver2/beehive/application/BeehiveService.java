@@ -5,6 +5,9 @@ import com.example.behiveemanagerver2.beehive.domain.Beehive;
 import com.example.behiveemanagerver2.beehive.domain.MarkOfBeehive;
 import com.example.behiveemanagerver2.beehive.domain.MaterialOfBeehive;
 import com.example.behiveemanagerver2.beehive.infastructure.MemoryBeehiveRepository;
+import com.example.behiveemanagerver2.uploads.application.port.UploadUseCase;
+import com.example.behiveemanagerver2.uploads.application.port.UploadUseCase.SaveUploadCommand;
+import com.example.behiveemanagerver2.uploads.domain.Upload;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +20,8 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class BeehiveService implements BeehiveUseCase {
 
-    MemoryBeehiveRepository repository;
+    private final MemoryBeehiveRepository repository;
+    private final UploadUseCase upload;
 
     @Override
     public List<Beehive> findAll() {
@@ -48,18 +52,31 @@ public class BeehiveService implements BeehiveUseCase {
     public List<Beehive> findByMark(MarkOfBeehive mark) {
         return repository.findaAll()
                 .stream()
-                .filter(beehive-> beehive.getMark() == mark)
+                .filter(beehive -> beehive.getMark() == mark)
                 .collect(Collectors.toList());
     }
 
     @Override
     public void updateSymbolOfBeehive(UpdateSymbolOfBeehiveCommand command) {
-        int length = command.getFile().length;
-        System.out.println("Receive cover command: " + command.getFilename() + " bytes: " + length);
+//        int length = command.getFile().length;
+//        System.out.println("Receive cover command: " + command.getFilename() + " bytes: " + length);
         repository.findById(command.getId())
-                .ifPresent(book -> {
-//                    book.setSymbolOfBeehive();
+                .ifPresent(beehive -> {
+                    Upload savedUpload = upload.save(new SaveUploadCommand(command.getFilename(), command.getFile(), command.getContentType()));
+                    beehive.setIdOfSymbolOfBeehive(savedUpload.getId());
+                    repository.save(beehive);
                 });
+    }
+
+    @Override
+    public void removeSymbolOfBeehive(Long id) {
+        repository.findById(id)
+                .ifPresent(beehive -> {
+                    if (beehive.getIdOfSymbolOfBeehive() != null) {
+                        upload.removeById(beehive.getIdOfSymbolOfBeehive());
+                        beehive.setIdOfSymbolOfBeehive(null);
+                        repository.save(beehive);
+                    }});
     }
 
     @Override
@@ -83,11 +100,11 @@ public class BeehiveService implements BeehiveUseCase {
     @Override
     public UpdateBeehiveResponse updateBeehive(UpdateBeehiveCommand command) {
         return repository.findById(command.getId())
-                .map(beehive ->{
+                .map(beehive -> {
                     Beehive updatedBeehive = command.updateFields(beehive);
                     repository.save(updatedBeehive);
                     return UpdateBeehiveResponse.SUCCESS;
-                }).orElseGet(()->new UpdateBeehiveResponse(
+                }).orElseGet(() -> new UpdateBeehiveResponse(
                         false, Collections.singletonList("Beehive not found with id: " + command.getId())));
     }
 }

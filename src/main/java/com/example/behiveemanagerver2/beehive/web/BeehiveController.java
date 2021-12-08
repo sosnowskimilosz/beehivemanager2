@@ -4,6 +4,7 @@ import com.example.behiveemanagerver2.beehive.application.port.BeehiveUseCase;
 import com.example.behiveemanagerver2.beehive.application.port.BeehiveUseCase.CreateBeehiveCommand;
 import com.example.behiveemanagerver2.beehive.application.port.BeehiveUseCase.UpdateBeehiveCommand;
 import com.example.behiveemanagerver2.beehive.application.port.BeehiveUseCase.UpdateBeehiveResponse;
+import com.example.behiveemanagerver2.beehive.application.port.BeehiveUseCase.UpdateSymbolOfBeehiveCommand;
 import com.example.behiveemanagerver2.beehive.domain.Beehive;
 import com.example.behiveemanagerver2.beehive.domain.MarkOfBeehive;
 import com.example.behiveemanagerver2.beehive.domain.MaterialOfBeehive;
@@ -92,7 +93,7 @@ public class BeehiveController {
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void addSymbolOfBeehive(@PathVariable Long id, @RequestParam("file") MultipartFile file) throws IOException {
         System.out.println("Got file: " + file.getOriginalFilename());
-        service.updateSymbolOfBeehive(new BeehiveUseCase.UpdateSymbolOfBeehiveCommand(
+        service.updateSymbolOfBeehive(new UpdateSymbolOfBeehiveCommand(
                 id,
                 file.getBytes(),
                 file.getContentType(),

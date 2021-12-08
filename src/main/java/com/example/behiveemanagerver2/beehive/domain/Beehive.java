@@ -13,7 +13,7 @@ public class Beehive {
     MaterialOfBeehive material;
     MarkOfBeehive mark;
     Boolean isQueen;
-    String symbolOfBeehive;
+    String idOfSymbolOfBeehive;
 
     public Beehive(String symbol, MaterialOfBeehive material, MarkOfBeehive mark, Boolean isQueen) {
         this.symbol = symbol;
